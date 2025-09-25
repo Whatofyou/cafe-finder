@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CafeFinder - Temukan cafe dan restoran terdekat di sekitar Anda">
+    <title>CafeFinder - Temukan Cafe Terdekat</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <!-- Leaflet MarkerCluster CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="home.css">
+    <!-- Favicon -->
+    <link rel="icon" href="https://img.icons8.com/color/48/000000/cafe.png" type="image/png">
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <header>
+        <div class="logo">
+            <i class="fas fa-mug-hot"></i> CafeFinder
+        </div>
+        <nav>
+            <ul>
+                <li><a href="home.html" class="active">HOME</a></li>
+                <li><a href="favourites.html">FAVORITE</a></li>
+                <li><a href="history.html">HISTORY</a></li>
+                <li class="dropdown">
+                    <div class="user-icon"><i class="fas fa-user-circle"></i></div>
+                    <div class="dropdown-content">
+                        <a href="#"><i class="fas fa-user"></i> Profile</a>
+                        <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <div class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+    
+    <main>
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>Temukan Café Terbaik di Sekitar Anda</h1>
+                <p>Cari café, restoran, atau tempat nongkrong favorit Anda dengan mudah</p>
+                <div class="search-container">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="search-input" placeholder="Cari café atau restoran...">
+                        <button id="quick-search-button" type="button">
+                            <i class="fas fa-search"></i> Cari
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="map-section">
+            <div class="map-container">
+                <div id="map"></div>
+            </div>
+        </section>
+        
+        <section class="filter-section">
+            <div class="filter-container">
+                <div class="filter-row">
+                    <div class="filter-item">
+                        <h3><i class="fas fa-filter"></i> Filter</h3>
+                    </div>
+                    <div class="filter-item">
+                        <label for="category">Kategori</label>
+                        <div class="select-wrapper">
+                            <select id="category">
+                                <option value="all">Semua Kategori</option>
+                                <option value="cafe">Kafe</option>
+                                <option value="restaurant">Restoran</option>
+                                <option value="fast_food">Fast Food</option>
+                                <option value="bar">Bar</option>
+                                <option value="pub">Pub</option>
+                                <option value="ice_cream">Es Krim</option>
+                                <option value="bakery">Bakery</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-item">
+                        <label for="location">Lokasi</label>
+                        <div class="select-wrapper">
+                            <select id="location">
+                                <option value="all">Lokasi Saya</option>
+                                <option value="jakarta">Jakarta</option>
+                                <option value="bekasi">Bekasi</option>
+                                <option value="bogor">Bogor</option>
+                                <option value="depok">Depok</option>
+                                <option value="tangerang">Tangerang</option>
+                                <option value="bandung">Bandung</option>
+                                <option value="cirebon">Cirebon</option>
+                                <option value="semarang">Semarang</option>
+                                <option value="yogyakarta">Yogyakarta</option>
+                                <option value="solo">Solo</option>
+                                <option value="surabaya">Surabaya</option>
+                                <option value="malang">Malang</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-item">
+                        <label for="radius">Radius (km)</label>
+                        <div class="range-slider">
+                            <input type="range" id="radius" min="1" max="10" value="5" class="range-slider-input">
+                            <output for="radius" id="radius-value">5</output>
+                        </div>
+                    </div>
+                    
+                    <div class="search-button-container">
+                        <button id="search-button"><i class="fas fa-search"></i> Cari</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="results-section">
+            <div class="results-header">
+                <h2>Hasil Pencarian</h2>
+                <div class="results-count" id="results-count"></div>
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid"><i class="fas fa-th"></i></button>
+                    <button class="view-btn" data-view="list"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+            <div id="results-container" class="results-container grid-view">
+                <!-- Results will be loaded here -->
+                <div class="initial-message">
+                    <i class="fas fa-search"></i>
+                    <p>Cari café atau restoran untuk melihat hasilnya di sini</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="favorite-section" id="favorite-section">
+            <div class="section-header">
+                <h2>Tempat Favorit Anda</h2>
+            </div>
+            <div id="favorites-container" class="favorites-container">
+                <!-- Favorites will be loaded here -->
+                <div class="initial-message">
+                    <i class="far fa-heart"></i>
+                    <p>Tambahkan tempat ke favorit untuk melihatnya di sini</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-mug-hot"></i> CafeFinder
+            </div>
+            <div class="footer-links">
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 CafeFinder. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <!-- Notification container -->
+    <div class="notification-container"></div>
+    
+    <!-- Loading container -->
+    <div class="loading">Loading</div>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <!-- Leaflet MarkerCluster JS -->
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <!-- Custom JS -->
+    <script src="home.js"></script>
+</body>
+</html>

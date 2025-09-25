@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CafeFinder - Tempat favorit Anda">
+    <title>CafeFinder - Tempat Favorit</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="home.css">
+    <!-- Favicon -->
+    <link rel="icon" href="https://img.icons8.com/color/48/000000/cafe.png" type="image/png">
+    <!-- Tambahan CSS untuk counter favorit -->
+    <style>
+        .favorites-counter-container {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 1.5rem;
+          max-width: 1200px;
+          margin: 0 auto 1.5rem;
+        }
+
+        .favorites-counter-container .results-count {
+          color: white;
+          font-size: 16px;
+          background-color: rgba(255, 140, 0, 0.8);
+          padding: 8px 16px;
+          border-radius: 20px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+          display: inline-flex;
+          align-items: center;
+        }
+
+        .favorites-counter-container .results-count:before {
+          content: '\f004';
+          font-family: 'Font Awesome 5 Free';
+          font-weight: 900;
+          margin-right: 8px;
+          font-size: 18px;
+        }
+
+        /* Memastikan header tetap memiliki margin di bagian bawah */
+        .results-header {
+          margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <header>
+        <div class="logo">
+            <i class="fas fa-mug-hot"></i> CafeFinder
+        </div>
+        <nav>
+            <ul>
+                <li><a href="home.html">HOME</a></li>
+                <li><a href="favourites.html" class="active">FAVORITE</a></li>
+                <li><a href="history.html">HISTORY</a></li>
+                <li class="dropdown">
+                    <div class="user-icon"><i class="fas fa-user-circle"></i></div>
+                    <div class="dropdown-content">
+                        <a href="#"><i class="fas fa-user"></i> Profile</a>
+                        <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <div class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+    
+    <main>
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>Tempat Favorit Anda</h1>
+                <p>Lihat dan kelola daftar café dan restoran favorit Anda</p>
+            </div>
+        </section>
+        
+        <section class="results-section">
+            <div class="results-header">
+                <h2>Daftar Tempat Favorit</h2>
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid"><i class="fas fa-th"></i></button>
+                    <button class="view-btn" data-view="list"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+            
+            <!-- Counter favorit di tengah -->
+            <div class="favorites-counter-container">
+                <div class="results-count" id="favorites-count">0 tempat favorit</div>
+            </div>
+            
+            <div id="favorites-list" class="results-container grid-view">
+                <!-- Favorites will be loaded here -->
+                <div class="initial-message">
+                    <i class="far fa-heart"></i>
+                    <p>Belum ada tempat favorit</p>
+                    <p>Tambahkan tempat ke favorit dari halaman utama</p>
+                    <a href="home.html" class="directions-btn" style="margin-top: 15px; display: inline-flex;">
+                        <i class="fas fa-home"></i> Kembali ke Halaman Utama
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-mug-hot"></i> CafeFinder
+            </div>
+            <div class="footer-links">
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 CafeFinder. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <!-- Notification container -->
+    <div class="notification-container"></div>
+    
+    <!-- Loading container -->
+    <div class="loading">Loading</div>
+    
+    <!-- Custom JS -->
+    <script src="favourites.js"></script>
+</body>
+</html>

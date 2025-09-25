@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CafeFinder - Riwayat tempat yang Anda lihat">
+    <title>CafeFinder - Riwayat Pencarian</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="home.css">
+    <!-- History-specific CSS -->
+    <style>
+        /* History Page Specific CSS */
+        .history-counter-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .history-counter-container .results-count {
+            color: white;
+            font-size: 16px;
+            background-color: var(--primary-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .history-counter-container .results-count:before {
+            content: '\f017';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            margin-right: 5px;
+            font-size: 16px;
+        }
+        
+        /* Tombol Clear History */
+        .clear-history-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all var(--transition-speed);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .clear-history-btn:hover {
+            background-color: #d32f2f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Grup waktu */
+        .time-group {
+            grid-column: 1 / -1;
+            background-color: rgba(255, 140, 0, 0.2);
+            padding: 12px 16px;
+            margin: 20px 0 10px 0;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .time-group i {
+            color: var(--primary-color);
+            font-size: 18px;
+        }
+        
+        /* Remove button */
+        .remove-btn {
+            background-color: rgba(244, 67, 54, 0.8);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all var(--transition-speed);
+            border: none;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+        
+        .remove-btn:hover {
+            transform: scale(1.1);
+            opacity: 1;
+            background-color: #f44336;
+        }
+        
+        /* Informasi waktu kunjungan */
+        .visit-time {
+            font-size: 13px;
+            color: var(--light-text);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+            background-color: rgba(255, 140, 0, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-flex;
+        }
+        
+        .visit-time i {
+            color: var(--primary-color);
+        }
+
+        /* Enhancements for initial message */
+        .initial-message {
+            grid-column: 1 / -1;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 3rem 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            color: var(--light-text);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            margin-top: 20px;
+        }
+
+        .initial-message i {
+            font-size: 64px;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            opacity: 0.7;
+        }
+
+        .initial-message p {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .initial-message a.directions-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            transition: all var(--transition-speed);
+            text-decoration: none;
+        }
+
+        .initial-message a.directions-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+    <!-- Favicon -->
+    <link rel="icon" href="https://img.icons8.com/color/48/000000/cafe.png" type="image/png">
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <header>
+        <div class="logo">
+            <a href="home.html" style="color: inherit; text-decoration: none;">
+                <i class="fas fa-mug-hot"></i> CafeFinder
+            </a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="home.html">HOME</a></li>
+                <li><a href="favourites.html">FAVORITE</a></li>
+                <li><a href="history.html" class="active">HISTORY</a></li>
+                <li class="dropdown">
+                    <div class="user-icon"><i class="fas fa-user-circle"></i></div>
+                    <div class="dropdown-content">
+                        <a href="#"><i class="fas fa-user"></i> Profile</a>
+                        <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <div class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+    
+    <main>
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>Riwayat Pencarian Anda</h1>
+                <p>Lihat tempat-tempat yang telah Anda kunjungi sebelumnya</p>
+            </div>
+        </section>
+        
+        <section class="results-section">
+            <div class="results-header">
+                <h2>Riwayat Pencarian</h2>
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid" title="Tampilan Grid"><i class="fas fa-th"></i></button>
+                    <button class="view-btn" data-view="list" title="Tampilan List"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+            
+            <!-- Counter history di tengah -->
+            <div class="history-counter-container">
+                <div class="results-count" id="history-count">Memuat riwayat...</div>
+            </div>
+            
+            <div id="history-list" class="results-container grid-view">
+                <!-- History items will be loaded here via JavaScript -->
+                <div class="initial-message">
+                    <i class="fas fa-history"></i>
+                    <p>Belum ada riwayat pencarian</p>
+                    <p>Tempat yang Anda lihat detailnya akan muncul di sini</p>
+                    <a href="home.html" class="directions-btn">
+                        <i class="fas fa-home"></i> Kembali ke Halaman Utama
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tombol untuk menghapus history -->
+            <div style="text-align: center; margin-top: 20px; margin-bottom: 30px;">
+                <button id="clear-history-btn" class="clear-history-btn">
+                    <i class="fas fa-trash-alt"></i> Hapus Semua Riwayat
+                </button>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-mug-hot"></i> CafeFinder
+            </div>
+            <div class="footer-links">
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 CafeFinder. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <!-- Notification container -->
+    <div class="notification-container"></div>
+    
+    <!-- Loading container -->
+    <div class="loading">Memuat riwayat</div>
+    
+    <!-- Custom JS -->
+    <script src="history.js"></script>
+</body>
+</html>
